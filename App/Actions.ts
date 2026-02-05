@@ -1,33 +1,42 @@
-'use client'
-import { useState } from 'react';
-import { startBuild } from './actions'; // We'll link to our server action
+'use server'
 
-export default function AppBuilderUI() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
-  const [repoUrl, setRepoUrl] = useState('');
+import { Octokit } from "octokit";
+import OpenAI from "openai";
 
-  async function handleLaunch(formData: FormData) {
-    setStatus('loading');
-    
-    // This calls the "Engine Room" we built earlier
-    const result = await startBuild(
-      formData.get('prompt') as string, 
-      formData.get('appName') as string
-    );
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
-    if (result.success) {
-      setRepoUrl(result.repoUrl);
-      setStatus('success');
-      // On mobile, we can automatically open the new GitHub repo
-      window.open(result.repoUrl, '_blank');
-    }
+export async function startBuild(prompt: string, appName: string) {
+  try {
+    // 1. Generate the Swift Code via AI
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "You are a professional SwiftUI developer. Return ONLY valid code for ContentView.swift." },
+        { role: "user", content: `Build a SwiftUI app that: ${prompt}` }
+      ],
+    });
+
+    const swiftCode = completion.choices[0].message.content || "";
+
+    // 2. Create the GitHub Repository for the user
+    const { data: repo } = await octokit.rest.repos.createForAuthenticatedUser({
+      name: appName.replace(/\s+/g, '-'), // Ensures no spaces in repo name
+      private: true,
+    });
+
+    // 3. Push the AI-generated code to the new repo
+    await octokit.rest.repos.createOrUpdateFileContents({
+      owner: repo.owner.login,
+      repo: repo.name,
+      path: "ContentView.swift",
+      message: "🚀 Initial AI App Generation",
+      content: Buffer.from(swiftCode).toString('base64'),
+    });
+
+    return { success: true, repoUrl: repo.html_url };
+  } catch (error: any) {
+    console.error("Build Error:", error);
+    return { success: false, error: error.message };
   }
-
-  if (status === 'loading') return <LoadingState />; // Use the "Glow Orb" we refined!
-
-  return (
-    <form action={handleLaunch}>
-       {/* ... your professional inputs and rocket button ... */}
-    </form>
-  );
 }

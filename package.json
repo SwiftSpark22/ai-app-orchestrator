@@ -17,5 +17,7 @@
     "lucide-react": "latest",
     "tailwind-merge": "latest",
     "clsx": "latest"
+    "autoprefixer": "latest",
+    "postcss": "latest"
   }
 }

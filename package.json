@@ -5,19 +5,19 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
+    "next": "15.1.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "openai": "latest",
-    "@octokit/rest": "latest"
+    "octokit": "latest",
     "lucide-react": "latest",
     "tailwind-merge": "latest",
-    "clsx": "latest"
-    "autoprefixer": "latest",
-    "postcss": "latest"
+    "clsx": "latest",
+    "tailwindcss": "3.4.17",
+    "postcss": "8.4.49",
+    "autoprefixer": "10.4.20"
   }
 }

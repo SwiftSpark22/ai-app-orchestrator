@@ -13,7 +13,7 @@
     "react": "latest",
     "react-dom": "latest",
     "openai": "latest",
-    "octokit": "latest",
+    "@octokit/rest": "latest"
     "lucide-react": "latest",
     "tailwind-merge": "latest",
     "clsx": "latest"

@@ -9,20 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "15.1.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
     "openai": "latest",
+    "octokit": "latest",
     "lucide-react": "latest",
     "tailwind-merge": "latest",
     "clsx": "latest"
-  },
-  "devDependencies": {
-    "typescript": "5.x",
-    "@types/node": "22.x",
-    "@types/react": "19.x",
-    "@types/react-dom": "19.x",
-    "postcss": "8.x",
-    "tailwindcss": "3.x"
   }
 }

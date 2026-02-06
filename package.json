@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build --no-lint",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "next": "15.1.6",
